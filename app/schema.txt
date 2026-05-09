@@ -1,0 +1,16 @@
+Tables:
+sales_orders(order_id, customer_id, order_date, total_amount, region)
+customers(customer_id, customer_name, city, country, segment)
+products(product_id, product_name, category, subcategory)
+order_items(order_id, product_id, quantity, line_amount)
+
+Relationships:
+sales_orders.customer_id -> customers.customer_id
+order_items.order_id -> sales_orders.order_id
+order_items.product_id -> products.product_id
+
+Business rules:
+- Revenue means SUM(line_amount)
+- Use TOP for row limiting
+- Prefer explicit column lists, never SELECT *
+- Only read operations are allowed

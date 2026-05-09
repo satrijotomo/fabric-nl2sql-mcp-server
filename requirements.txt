@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pyodbc
+azure-identity
+openai
+pydantic
+python-dotenv
