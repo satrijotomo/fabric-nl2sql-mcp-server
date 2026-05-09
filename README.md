@@ -1,5 +1,10 @@
 # Fabric Lakehouse NL → SQL MCP Server
 
+Note: This repo is using Fabric environment (lakehouse) deployed using this repo:
+https://github.com/Azure-Samples/agentic-app-with-fabric
+See the note at the end of this readme for the reusability across different lakehouse environments. 
+
+
 This repository provides a **Model Context Protocol (MCP)-compatible server** that enables:
 
 ✅ Natural language queries  
