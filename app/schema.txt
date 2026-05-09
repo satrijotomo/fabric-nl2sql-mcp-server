@@ -31,12 +31,14 @@ dbo.chat_sessions:
 - created_at
 - updated_at
 - total_agents_used
+- session_duration_ms
 
 dbo.chat_history:
 - agent_id
 - agent_name
-- content
 - completion_tokens
+- content
+- finish_reason
 - message_id
 - message_type
 - model_name
@@ -46,6 +48,7 @@ dbo.agent_definitions:
 - name
 - description
 - llm_config
+- prompt_template
 - created_at
 
 dbo.agent_traces:
@@ -60,13 +63,14 @@ dbo.tool_usage:
 - tool_id
 - tool_name
 - tokens_used
-- total_call_id
 - status
+- session_id
 
 dbo.tool_definitions:
 - tool_id
 - name
 - description
+- cost_per_call_cents
 - is_active
 - version
 
@@ -75,12 +79,20 @@ dbo.longterm_memory:
 - user_id
 - messages
 - created_at
+- updated_at
 
 dbo.gen_ui_config:
 - id
 - config
 - simulation_config
 - created_at
+
+dbo.contentIssues:
+- agent_id
+- content
+- hate_filtered
+- jailbreak_detected
+- self_harm_filtered
 
 Relationships:
 
@@ -90,21 +102,25 @@ Relationships:
 - users.id = chat_sessions.user_id
 - chat_sessions.session_id = agent_traces.session_id
 - chat_sessions.session_id = tool_usage.session_id
+- chat_sessions.session_id = chat_history.session_id
 - agent_definitions.agent_id = tool_definitions.tool_id
 
 Business meaning:
 
-- A user can have multiple accounts
-- Transactions happen between accounts
-- Chat sessions belong to users
-- Agents and tools operate within sessions
+- Users own accounts
+- Transactions move money between accounts
+- Users start chat sessions
+- Chat sessions involve agents and tools
+- Agent traces record execution steps
+- Tool usage captures LLM tool activity
+- Chat history stores messages
 
 Rules:
 
 - Always use dbo schema
 - Only use listed tables
 - Prefer JOINs when relationships exist
-- Do not use sys tables
 - Use GROUP BY for aggregations
-- Use TOP for limiting results
-- Prefer meaningful outputs (names, counts, totals)
+- Use TOP for limiting rows
+- Do not use sys tables
+- Think like a data analyst when answering questions
