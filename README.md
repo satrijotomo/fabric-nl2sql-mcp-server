@@ -294,9 +294,10 @@ The system is **schema-driven**:
 
     LLM + schema.txt → SQL → Fabric → Results
 
-👉 Keeping the schema accurate is the single most important factor for correctness.
+👉 The quality of responses depends heavily on schema.txt.
+Include relationships and business meaning to enable accurate analytics queries.
 
 ***
 
-If you want, I can help you next turn this into a **plug-and-play multi-tenant demo (auto-detect schema + dynamic prompts)**—which works really well for customer workshops.
+
 

@@ -46,6 +46,7 @@ Rules:
 - Use TOP for limiting rows where appropriate.
 - If the question is ambiguous, choose the safest reasonable interpretation.
 - Use only tables and columns from the schema below.
+- Think like a data analyst: interpret user intent using relationships and business meaning.
 
 Schema:
 {schema_text}
