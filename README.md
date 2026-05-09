@@ -25,20 +25,31 @@ This project provides a **wrapper pattern** that:
 ---
 
 ## 🧠 Architecture Overview
-'''User (Teams / Copilot)
+User (Teams / Copilot)
+
 ↓
+
 Foundry Agent
+
 ↓
+
 MCP Server (this repo)
+
 ↓
+
 NL → SQL (Azure OpenAI)
+
 ↓
+
 SQL Guard (validation + safety)
+
 ↓
+
 Fabric SQL Endpoint (Lakehouse)
+
 ↓
+
 JSON response
-'''
 
 👉 See ./architecture.md for details.
 
