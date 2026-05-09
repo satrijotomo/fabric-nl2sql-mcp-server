@@ -1,5 +1,5 @@
 import pyodbc
-from config import FABRIC_SQL_SERVER, FABRIC_DATABASE
+from app.config import FABRIC_SQL_SERVER, FABRIC_DATABASE
 
 def run_sql(sql: str):
     conn = pyodbc.connect(
@@ -9,7 +9,7 @@ def run_sql(sql: str):
         "Encrypt=yes;"
         "TrustServerCertificate=no;"
         "Connection Timeout=30;"
-        "Authentication=ActiveDirectoryMsi"
+        "Authentication=ActiveDirectoryInteractive"
     )
 
     cursor = conn.cursor()

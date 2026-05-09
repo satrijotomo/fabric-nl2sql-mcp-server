@@ -82,3 +82,43 @@ AZURE_OPENAI_DEPLOYMENT=gpt-4.1
 
 uvicorn app.server:app --reload --port 7071
 
+
+### Example request
+
+POST /tools/query_lakehouse
+{
+  "question": "What are the top 10 customers by revenue this year?"
+}
+
+### Example response
+
+{
+  "success": true,
+  "sql": "SELECT TOP 10 c.customer_name, SUM(oi.line_amount) AS revenue ...",
+  "rows": [
+    { "customer_name": "Contoso", "revenue": 154230.25 }
+  ]
+}
+
+🧪 Usage in Foundry / Agents
+Add tool:
+https://<your-app>/tools/query_lakehouse
+
+Schema:
+
+{
+  "type": "object",
+  "properties": {
+    "question": { "type": "string" }
+  },
+  "required": ["question"]
+}
+``
+
+### Test:
+1. Run from project root folder: 
+uvicorn app.server:app --reload --port 7071
+
+2. Open http://127.0.0.1:7071/docs
+
+3. Test the POST /tools/query_lakehouse

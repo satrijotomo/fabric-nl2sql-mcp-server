@@ -10,7 +10,6 @@ FORBIDDEN = [
     r"\bMERGE\b",
     r"\bEXEC\b",
     r"\bCREATE\b",
-    r";",  # optional: reject multi-statement
 ]
 
 ALLOWED_PREFIXES = [

@@ -1,16 +1,110 @@
-Tables:
-sales_orders(order_id, customer_id, order_date, total_amount, region)
-customers(customer_id, customer_name, city, country, segment)
-products(product_id, product_name, category, subcategory)
-order_items(order_id, product_id, quantity, line_amount)
+Tables and columns:
+
+dbo.users:
+- id
+- email
+- name
+- created_at
+
+dbo.accounts:
+- id
+- account_number
+- user_id
+- balance
+- account_type
+- created_at
+
+dbo.transactions:
+- id
+- from_account_id
+- to_account_id
+- amount
+- category
+- status
+- type
+- created_at
+
+dbo.chat_sessions:
+- session_id
+- user_id
+- title
+- created_at
+- updated_at
+- total_agents_used
+
+dbo.chat_history:
+- agent_id
+- agent_name
+- content
+- completion_tokens
+- message_id
+- message_type
+- model_name
+
+dbo.agent_definitions:
+- agent_id
+- name
+- description
+- llm_config
+- created_at
+
+dbo.agent_traces:
+- session_id
+- trace_id
+- step_order
+- success
+- execution_duration_ms
+- error_message
+
+dbo.tool_usage:
+- tool_id
+- tool_name
+- tokens_used
+- total_call_id
+- status
+
+dbo.tool_definitions:
+- tool_id
+- name
+- description
+- is_active
+- version
+
+dbo.longterm_memory:
+- id
+- user_id
+- messages
+- created_at
+
+dbo.gen_ui_config:
+- id
+- config
+- simulation_config
+- created_at
 
 Relationships:
-sales_orders.customer_id -> customers.customer_id
-order_items.order_id -> sales_orders.order_id
-order_items.product_id -> products.product_id
 
-Business rules:
-- Revenue means SUM(line_amount)
-- Use TOP for row limiting
-- Prefer explicit column lists, never SELECT *
-- Only read operations are allowed
+- users.id = accounts.user_id
+- accounts.id = transactions.from_account_id
+- accounts.id = transactions.to_account_id
+- users.id = chat_sessions.user_id
+- chat_sessions.session_id = agent_traces.session_id
+- chat_sessions.session_id = tool_usage.session_id
+- agent_definitions.agent_id = tool_definitions.tool_id
+
+Business meaning:
+
+- A user can have multiple accounts
+- Transactions happen between accounts
+- Chat sessions belong to users
+- Agents and tools operate within sessions
+
+Rules:
+
+- Always use dbo schema
+- Only use listed tables
+- Prefer JOINs when relationships exist
+- Do not use sys tables
+- Use GROUP BY for aggregations
+- Use TOP for limiting results
+- Prefer meaningful outputs (names, counts, totals)

@@ -1,4 +1,8 @@
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
+
 
 FABRIC_SQL_SERVER = os.getenv("FABRIC_SQL_SERVER")   # e.g. yourworkspace.datawarehouse.fabric.microsoft.com
 FABRIC_DATABASE = os.getenv("FABRIC_DATABASE")       # e.g. your lakehouse SQL endpoint database

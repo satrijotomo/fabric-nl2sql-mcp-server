@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException
-from models import AskRequest, QueryResponse
-from nl2sql import generate_sql
-from sql_guard import validate_sql, enforce_row_limit
-from fabric_sql import run_sql
+from app.models import AskRequest, QueryResponse
+from app.nl2sql import generate_sql
+from app.sql_guard import validate_sql, enforce_row_limit
+from app.fabric_sql import run_sql
 
 app = FastAPI(title="Fabric Lakehouse NL2SQL MCP Wrapper")
 

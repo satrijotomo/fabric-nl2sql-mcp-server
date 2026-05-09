@@ -1,0 +1,82 @@
+# =========================
+# Python basics
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# =========================
+# Virtual environments
+# =========================
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# Environment variables / secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# IDE / editors
+# =========================
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Logs & runtime files
+# =========================
+*.log
+*.out
+*.err
+
+# =========================
+# Python testing / coverage
+# =========================
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# =========================
+# Build / packaging
+# =========================
+dist/
+build/
+*.egg-info/
+
+# =========================
+# Local artifacts
+# =========================
+*.db
+*.sqlite
+*.bak
+
+# =========================
+# Jupyter (if you ever use it)
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Docker (optional future)
+# =========================
+*.env.local
+
+# =========================
+# Azure / deployment artifacts
+# =========================
+.azure/

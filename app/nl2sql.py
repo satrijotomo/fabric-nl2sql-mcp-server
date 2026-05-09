@@ -1,15 +1,22 @@
 import json
+import os
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from openai import AzureOpenAI
-from config import (
+from app.config import (
     AZURE_OPENAI_ENDPOINT,
     AZURE_OPENAI_DEPLOYMENT,
     AZURE_OPENAI_API_VERSION,
     SCHEMA_CACHE_PATH
 )
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+schema_path = os.path.join(BASE_DIR, "schema.txt")
+
 def load_schema():
-    with open(SCHEMA_CACHE_PATH, "r", encoding="utf-8") as f:
+    
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    schema_path = os.path.join(BASE_DIR, "schema.txt")
+    with open(schema_path, "r", encoding="utf-8") as f:
         return f.read()
 
 def build_client():
@@ -47,7 +54,7 @@ Schema:
     response = client.chat.completions.create(
         model=AZURE_OPENAI_DEPLOYMENT,
         temperature=0,
-        parallel_tool_calls=False,   # recommended with structured outputs per Microsoft doc
+        # parallel_tool_calls=False,   # recommended with structured outputs per Microsoft doc
         response_format={
             "type": "json_schema",
             "json_schema": {
