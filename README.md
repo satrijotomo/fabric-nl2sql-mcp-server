@@ -134,3 +134,169 @@ uvicorn app.server:app --reload --port 7071
 2. Open http://127.0.0.1:7071/docs
 
 3. Test the POST /tools/query_lakehouse
+
+
+Here’s a clean **single block you can paste directly into your README** 👍  
+It merges everything we discussed into a concise, practical section.
+
+***
+
+## 🔄 Switching to a Different Lakehouse / Database
+
+This project is designed to be reusable across different Microsoft Fabric Lakehouses. When onboarding a new dataset, you only need to update a few configuration files—everything else remains reusable.
+
+***
+
+### ✅ Required Changes
+
+#### 1. Update Connection Settings (`.env`)
+
+Modify the Fabric connection details:
+
+```env
+FABRIC_SQL_SERVER=<your-sql-endpoint>
+FABRIC_DATABASE=<your-database-name>
+```
+
+*   `FABRIC_SQL_SERVER`: Use the SQL endpoint host from Fabric (usually a long GUID-like string).
+*   `FABRIC_DATABASE`: Use the SQL endpoint database name (often matches the Lakehouse name).
+
+***
+
+#### 2. Update Semantic Schema (`app/schema.txt`) ⭐ *Most Important*
+
+This file defines how the LLM understands your data model.
+
+You must update:
+
+*   ✅ Table names
+*   ✅ Key columns
+*   ✅ Relationships
+*   ✅ Business meaning
+
+Example:
+
+```txt
+Tables:
+dbo.orders
+dbo.customers
+dbo.products
+
+Relationships:
+orders.customer_id = customers.id
+orders.product_id = products.id
+
+Business meaning:
+- Customers place orders
+- Each order is associated with a product
+
+Rules:
+- Always use dbo schema
+- Only use listed tables
+- Prefer JOINs when relationships exist
+- Do not use sys tables
+```
+
+👉 If this file is outdated or incorrect:
+
+*   SQL generation will be inaccurate
+*   Joins may fail
+*   The model may hallucinate tables
+
+***
+
+### ⚠️ Conditional Changes
+
+#### 3. Adjust Schema Name (`app/fabric_sql.py`)
+
+If your Lakehouse uses a schema other than `dbo`, update:
+
+```sql
+AND TABLE_SCHEMA = 'dbo'
+```
+
+to:
+
+```sql
+AND TABLE_SCHEMA = '<your_schema>'
+```
+
+***
+
+### ✅ No Changes Needed
+
+The following files are reusable across datasets:
+
+*   `app/server.py` → API + orchestration logic
+*   `app/nl2sql.py` → LLM prompt and SQL generation
+*   `app/sql_guard.py` → SQL safety and validation
+
+These components are dataset‑agnostic.
+
+***
+
+### 💡 Recommended Structure for Multi-Dataset Use
+
+Instead of editing `schema.txt` each time, create separate schema files:
+
+    schemas/
+      banking_schema.txt
+      retail_schema.txt
+      healthcare_schema.txt
+
+Then update `.env`:
+
+```env
+SCHEMA_FILE=schemas/<your_schema>.txt
+```
+
+And in `config.py`:
+
+```python
+SCHEMA_FILE = os.getenv("SCHEMA_FILE", "app/schema.txt")
+```
+
+👉 This allows you to switch datasets without modifying code.
+
+***
+
+### 🚀 Optional Enhancement (Advanced)
+
+For production scenarios, you can dynamically generate schema metadata:
+
+```sql
+SELECT TABLE_NAME, COLUMN_NAME
+FROM INFORMATION_SCHEMA.COLUMNS
+```
+
+and inject it into the prompt instead of maintaining `schema.txt` manually.
+
+***
+
+### ✅ Summary
+
+When switching Lakehouses:
+
+| File            | Change Required  | Notes                                 |
+| --------------- | ---------------- | ------------------------------------- |
+| `.env`          | ✅ Yes            | Update server + database              |
+| `schema.txt`    | ✅ Yes (critical) | Update tables, columns, relationships |
+| `fabric_sql.py` | ⚠️ Sometimes     | Update schema name if needed          |
+| `server.py`     | ❌ No             | Fully reusable                        |
+| `nl2sql.py`     | ❌ No             | Reusable (prompt can be tuned)        |
+| `sql_guard.py`  | ❌ No             | Reusable                              |
+
+***
+
+### 🧠 Key Principle
+
+The system is **schema-driven**:
+
+    LLM + schema.txt → SQL → Fabric → Results
+
+👉 Keeping the schema accurate is the single most important factor for correctness.
+
+***
+
+If you want, I can help you next turn this into a **plug-and-play multi-tenant demo (auto-detect schema + dynamic prompts)**—which works really well for customer workshops.
+
